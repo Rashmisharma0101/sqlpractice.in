@@ -1,0 +1,16 @@
+Use a derived table to find the average salary per department, then filter f
+or departments with avg salary > 50000
+
+select dt.dept_id, dt.avgsal from (select dept_id, avg(salary) as avgsal from departments join employees
+on departments.dept_id  = employees.dept_id
+group by dept_id) as dt
+where dt.avgsal > 50000
+--------------------------------------------------------------------------------------------------------
+Find all employees whose salary equals the maximum salary in their department using a correlated subquery.
+SELECT *
+FROM employees e1
+WHERE e1.salary = (
+    SELECT MAX(e2.salary)
+    FROM employees e2
+    WHERE e2.dept_id = e1.dept_id
+);
