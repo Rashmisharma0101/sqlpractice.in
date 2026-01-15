@@ -1,0 +1,98 @@
+List all patients with a column showing the total count of patients in the table.
+select patient_id, count() over () from patients
+learning- count() over () gives total row count as separate column
+------------------------------------------------------------------------------------------------
+Moving Average Cost
+Calculate a 3-period moving average of admission costs (current row and 2 preceding).
+
+SELECT 
+    admission_id,
+    admission_cost,
+    AVG(admission_cost) OVER (
+        ORDER BY admission_date
+        ROWS BETWEEN 2 PRECEDING AND CURRENT ROW
+    ) AS moving_average_costs
+FROM admissions
+ORDER BY admission_date;
+
+---------------------------------------------------------------------------------------------------------
+NTILE
+
+1️⃣ What NTILE does
+
+Syntax:
+
+NTILE(n) OVER (ORDER BY column_name)
+
+
+n → number of buckets (tiles/quantiles) you want
+
+It splits the ordered rows into n groups
+
+Returns an integer from 1 to n indicating which bucket each row belongs to
+
+Example:
+
+Suppose we have a table of sales:
+
+employee_id	sales
+1	100
+2	200
+3	300
+4	400
+5	500
+
+We want to divide these 5 rows into 2 buckets (like top-half and bottom-half):
+
+SELECT 
+    employee_id,
+    sales,
+    NTILE(2) OVER (ORDER BY sales) AS bucket
+FROM employees;
+
+Result:
+
+employee_id	sales	bucket
+1	100	1
+2	200	1
+3	300	2
+4	400	2
+5	500	2
+
+Rows are ordered by sales
+
+The first half goes to bucket 1, the second half goes to bucket 2
+
+NTILE tries to keep the buckets roughly equal, but if the total rows don’t divide evenly, some buckets may have 1 more row than others
+
+2️⃣ Common use-cases
+
+Quartiles / Deciles / Percentiles
+
+NTILE(4) → quartiles
+
+NTILE(10) → deciles
+
+NTILE(100) → percentiles
+
+
+EXAMPLE
+
+
+Example: quartiles of sales
+SELECT 
+    employee_id,
+    sales,
+    NTILE(4) OVER (ORDER BY sales DESC) AS quartile
+FROM employees;
+
+employee_id	sales	quartile
+5	500	1
+4	400	1
+3	300	2
+2	200	3
+1	100	4
+
+1 → top 25%
+
+4 → bottom 25%
