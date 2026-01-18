@@ -1,0 +1,7 @@
+ntile, percent_rank
+
+syntax example 
+SELECT c.first_name, c.last_name, c.country, total_spent, 
+NTILE(3) OVER (ORDER BY total_spent DESC) as spending_tier, 
+PERCENT_RANK() OVER (ORDER BY total_spent) as percentile_rank 
+---------------------------------------------------------------------------------------------------------
