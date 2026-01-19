@@ -1,0 +1,5 @@
+A foreign key CAN reference a column that is not a primary key, as long as that column is UNIQUE 
+(or has a UNIQUE constraint) in the referenced table.
+
+------------------------------------------------------------------------------
+YEAR(sale_date) = YEAR(CURDATE())  - curdate() - current date
