@@ -2,4 +2,26 @@ A foreign key CAN reference a column that is not a primary key, as long as that 
 (or has a UNIQUE constraint) in the referenced table.
 
 ------------------------------------------------------------------------------
-YEAR(sale_date) = YEAR(CURDATE())  - curdate() - current date
+YEAR(sale_date) = YEAR(CURDATE())  - curdate() # -->- current date
+
+------------------------------------------------------------------------------
+Given a slow query on employees table: SELECT * FROM employees WHERE department = 'Sales' AND salary > 50000;
+Write a SQL query to create a composite index on those columns to optimize this query.
+
+CREATE INDEX idx_dept_salary ON employees(department, salary);
+
+A composite index on (department, salary) optimizes both WHERE conditions.
+Order matters - put the equality condition (department) first.
+------------------------------------------------------------------------------
+Schema: customers(id, name, city), orders(id, customer_id, amount, order_date) 
+Write a SQL query to find customer name who have placed orders in the last 30 days with total order value > 1000.
+
+select customers.name, sum(amount) as amt
+from customers join orders
+on customers.id = orders.customer_id
+where orders.order_date >= curdate() - interval 30 day
+group by customers.name
+having amt > 1000
+------------------------------------------------------------------------------
+
+
