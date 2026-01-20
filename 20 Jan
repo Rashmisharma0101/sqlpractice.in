@@ -1,0 +1,13 @@
+You're designing an ETL process for a data warehouse. Source system has 10M daily transactions. 
+You need to load only changed/new records and maintain historical data. 
+Design the SQL approach using staging tables.
+
+
+CREATE staging table with same structure plus audit columns (load_date, operation_type). 
+Use MERGE statement: MERGE target USING staging ON (key_match) WHEN MATCHED AND source.hash <> target.hash 
+THEN UPDATE WHEN NOT MATCHED THEN INSERT. 
+Include change tracking with effective_date and end_date for historical records.
+ETL processes require staging areas, change detection mechanisms,
+and proper handling of historical data for data warehouse integrity.
+
+-----------------------------------------------------------------------------------------------------
